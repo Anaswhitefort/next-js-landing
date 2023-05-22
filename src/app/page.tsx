@@ -1,5 +1,7 @@
+import ApplicationNavBar from "@/components/navbars/ApplicationNavBar";
+
 export default function Home() {
   return (
-    <span>Home Page</span>
+    <ApplicationNavBar />
   )
 }

@@ -1,8 +1,6 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
-import "primereact/resources/themes/lara-light-blue/theme.css"
-import "primereact/resources/primereact.min.css"
-import "primeflex/primeflex.css"
+import "../theme/custom.scss"
 
 const inter = Inter({ subsets: ['latin'] })
 
