@@ -1,5 +1,8 @@
 @charset "utf-8";
-@import "bulma/bulma.sass";
 
 // Here we override variable values to customize theme
 // https://bulma.io/documentation/customize/variables/
+$body-background-color: hsl(0, 0%, 97%);
+
+// This must be all statement in the file for the above variable to have an effect
+@import "bulma/bulma.sass";

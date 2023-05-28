@@ -1,7 +1,9 @@
-import ApplicationNavBar from "@/components/navbars/ApplicationNavBar";
+import ApplicationLayout from "@/components/layout/ApplicationLayout";
 
 export default function Home() {
   return (
-    <ApplicationNavBar />
+    <ApplicationLayout>
+      todo
+    </ApplicationLayout>
   )
 }
