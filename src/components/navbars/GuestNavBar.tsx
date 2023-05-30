@@ -6,9 +6,11 @@ type GuestNavBarProps = {} & Pick<BNavBarProps, "navbarBrand">;
 export default function GuestNavBar(props: GuestNavBarProps) {
   const navbarStart = (
     <>
+      {/*
       <a className="navbar-item">
         Optional Page 1
       </a>
+      */}
     </>
   );
 
