@@ -1,19 +1,26 @@
 'use client'
 
-import ApplicationLayout from "@/components/layout/ApplicationLayout"
-import {routes} from '@/app/routes'
-import { ChangeEvent, MouseEvent, useEffect, useState } from "react"
-import { useAuthState, useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import BButton from "@/components/bulma/BButton";
+import ApplicationLayout from "@/components/layout/ApplicationLayout";
+import { routes } from "../routes";
+import { EmailPasswordCredentials } from "@/components/auth/generic";
+import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
+import { useAuthState, useCreateUserWithEmailAndPassword, useSendEmailVerification } from "react-firebase-hooks/auth";
 import { getAuth } from "firebase/auth";
 import { firebase } from "@/components/firebase/setup";
-import { EmailPasswordCredentials } from "@/components/auth/generic";
 import { redirect } from 'next/navigation'
-import BButton from "@/components/bulma/BButton";
 
-export default function Login() {
+export default function Signup() {
   const [credentials, setCredentials] = useState<EmailPasswordCredentials>({email: '', password: ''});
   const [loggedInUser, isLoading] = useAuthState(getAuth(firebase));
-  const [signInWithEmailAndPassword, _user, loading, error] = useSignInWithEmailAndPassword(getAuth(firebase));
+  const [createUserWithEmailAndPassword, _user, loading, signupError] = useCreateUserWithEmailAndPassword(getAuth(firebase));
+  const [sendEmailVerification, sending, verificationError] = useSendEmailVerification(getAuth(firebase))
+
+  const getHandler = (name: keyof EmailPasswordCredentials) => {
+    return (event: ChangeEvent<HTMLInputElement>) => {
+      setCredentials({ ...credentials, [name]: event.target.value })
+    }
+  };
 
   useEffect(() => {
     if (loggedInUser) {
@@ -21,16 +28,12 @@ export default function Login() {
     }
   }, [loggedInUser, isLoading])
 
-  const getHandler = (name: keyof EmailPasswordCredentials) => {
-    return (event: ChangeEvent<HTMLInputElement>) => {
-      setCredentials({ ...credentials, [name]: event.target.value })
-    }
-  }
+  const onClickRegister = async function (event: MouseEvent) {
+    await createUserWithEmailAndPassword(credentials.email, credentials.password);
 
-  const onClickLogin = function (event: MouseEvent) {
-    signInWithEmailAndPassword(credentials.email, credentials.password);
+    sendEmailVerification();
   }
-
+  
   return (
     <ApplicationLayout>
       <div className="container">
@@ -59,24 +62,22 @@ export default function Login() {
 
                     <br />
 
-                    { error &&
+                    { signupError &&
                       <div className="message is-danger">
                         <div className="message-body">
-                          { error.message }
+                          { signupError.message }
                         </div>
                       </div>
                     }
 
                     <div className="buttons">
-                      <BButton className="is-primary is-fullwidth" loading={loading} onClick={onClickLogin}>
-                        { "Login" }
+                      <BButton className="is-primary is-fullwidth" loading={loading} onClick={onClickRegister}>
+                        { "Register" }
                       </BButton>
                     </div>
 
                     <div className="has-text-centered">
-                      <a href={routes.forgotPassword.url}>Forgot my password</a>
-                      <span> • </span>
-                      <a href={routes.signup.url}>Create an account</a>
+                      <a href={routes.login.url}>I already have an account</a>
                     </div>
                   </div>
                 </div>
@@ -89,6 +90,5 @@ export default function Login() {
         </div>
       </div>
     </ApplicationLayout>
-  )
+  );
 }
-
