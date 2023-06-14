@@ -1,5 +1,6 @@
 import { routes } from "@/app/routes";
 import BNavBar, { BNavBarProps } from "@/components/bulma/BNavBar";
+import { SignInNavbarItem } from "../auth/AuthButtons";
 
 type GuestNavBarProps = {} & Pick<BNavBarProps, "navbarBrand">;
 
@@ -15,9 +16,7 @@ export default function GuestNavBar(props: GuestNavBarProps) {
   );
 
   const navbarEnd = (
-    <a href={routes.login.url} className="navbar-item">
-        { "Login" }
-    </a>
+    <SignInNavbarItem />
   );
 
   return (

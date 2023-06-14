@@ -1,7 +1,7 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
 import "../theme/custom.scss"
-import "@/components/firebase/setup"
+import AuthProvider from './AuthProvider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -16,8 +16,10 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
-    </html>
+    <AuthProvider>
+      <html lang="en">
+        <body className={inter.className}>{children}</body>
+      </html>
+    </AuthProvider>
   )
 }
